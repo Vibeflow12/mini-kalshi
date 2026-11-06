@@ -20,3 +20,5 @@ export const authTokenSchema = z.object({
   iat: z.number(),
   exp: z.number(),
 });
+
+export type AuthTokenPayload = z.infer<typeof authTokenSchema>;
