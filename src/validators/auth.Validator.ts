@@ -17,8 +17,6 @@ export type SigninBody = z.infer<typeof signinSchema>;
 export const authTokenSchema = z.object({
   id: z.string(),
   role: z.enum(['user', 'admin']),
-  iat: z.number(),
-  exp: z.number(),
 });
 
 export type AuthTokenPayload = z.infer<typeof authTokenSchema>;

@@ -8,7 +8,7 @@ import {
   type SignupBody,
 } from '../validators/auth.Validator';
 import User from '../models/users.model';
-import type { AuthTokenPayload } from '../types/auth.types';
+import type { AuthTokenPayload } from '../validators/auth.Validator';
 
 export const signupController = async (req: Request<{}, {}, SignupBody>, res: Response) => {
   try {
