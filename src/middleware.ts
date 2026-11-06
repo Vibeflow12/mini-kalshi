@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import type { AuthTokenPayload } from './types/user.types';
 import type { Request, Response, NextFunction } from 'express';
 import User from './schema/users.Schema';
+import { authTokenSchema } from './validators/auth.Validator';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
@@ -20,13 +21,21 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     });
   }
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as AuthTokenPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
 
-    if (typeof decoded === 'string' || typeof decoded.id !== 'string') {
+    if (typeof decoded === 'string') {
       return res.status(401).json({ message: 'invalid token' });
     }
 
-    const user = await User.findById(decoded.id);
+    const parsedPayload = authTokenSchema.safeParse(decoded);
+
+    if (!parsedPayload.success) {
+      return res.status(401).json({ message: 'invalid token payload' });
+    }
+
+    const payload: AuthTokenPayload = parsedPayload.data;
+
+    const user = await User.findById(payload.id);
 
     if (!user) {
       return res.status(401).json({
@@ -35,8 +44,15 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     }
 
     req.user = user;
-    next();
+    return next();
   } catch (error) {
+    if (error instanceof jwt.TokenExpiredError || error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({
+        message: 'invalid or expired token',
+      });
+    }
+
+    console.error('AUTH MIDDLEWARE ERROR:', error);
     return res.status(500).json({
       message: 'internal server error',
     });

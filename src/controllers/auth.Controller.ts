@@ -1,10 +1,14 @@
 import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { signupSchema, type SignupBody } from '../validators/signup.Validator';
-import { signinSchema, type SigninBody } from '../validators/signin.Validator';
+import {
+  signinSchema,
+  type SigninBody,
+  signupSchema,
+  type SignupBody,
+} from '../validators/auth.Validator';
 import User from '../schema/users.Schema';
-
+import type { AuthTokenPayload } from '../types/user.types';
 
 export const signupController = async (req: Request<{}, {}, SignupBody>, res: Response) => {
   try {
@@ -17,7 +21,7 @@ export const signupController = async (req: Request<{}, {}, SignupBody>, res: Re
       });
     }
 
-    const { username, password } = parsedData.data;
+    const { username, email, password } = parsedData.data;
 
     const existingUser = await User.findOne({ username });
 
@@ -29,7 +33,7 @@ export const signupController = async (req: Request<{}, {}, SignupBody>, res: Re
 
     const hashPassword = await bcrypt.hash(password, 10);
 
-    await User.create({ username, password: hashPassword });
+    await User.create({ username, email, password: hashPassword });
 
     return res.status(200).json({
       message: 'user created successfully',
@@ -65,8 +69,13 @@ export const signinController = async (req: Request<{}, {}, SigninBody>, res: Re
 
     const compairPassword = await bcrypt.compare(password, existingUser.password);
 
+    const payload: AuthTokenPayload = {
+      id: existingUser._id.toString(),
+      role: existingUser.role,
+    };
+
     if (compairPassword) {
-      const token = jwt.sign({ id: existingUser._id.toString() }, process.env.JWT_SECRET!, {
+      const token = jwt.sign(payload, process.env.JWT_SECRET!, {
         expiresIn: '2h',
       });
 
