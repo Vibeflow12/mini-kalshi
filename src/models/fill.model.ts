@@ -29,7 +29,7 @@ const fillSchema = new Schema(
     },
     price: {
       type: BigInt,
-      required:true,
+      required: true,
     },
     quantity: {
       type: Number,
@@ -42,7 +42,6 @@ const fillSchema = new Schema(
     timestamps: true,
   }
 );
-
 
 export type fillSchemaT = InferSchemaType<typeof fillSchema>;
 
