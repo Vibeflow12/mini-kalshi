@@ -7,7 +7,7 @@ import {
   signupSchema,
   type SignupBody,
 } from '../validators/auth.Validator';
-import User from '../schema/users.Schema';
+import User from '../models/users.model';
 import type { AuthTokenPayload } from '../types/user.types';
 
 export const signupController = async (req: Request<{}, {}, SignupBody>, res: Response) => {

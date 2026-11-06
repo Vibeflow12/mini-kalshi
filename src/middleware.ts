@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import type { AuthTokenPayload } from './types/user.types';
 import type { Request, Response, NextFunction } from 'express';
-import User from './schema/users.Schema';
+import User from './models/users.model';
 import { authTokenSchema } from './validators/auth.Validator';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {

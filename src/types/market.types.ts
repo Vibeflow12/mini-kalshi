@@ -5,4 +5,6 @@ export interface IMarket {
   title: string;
   totalIssued: number;
   resolution: 'YES' | 'NO' | 'PENDING';
+  expiry: Date;
+  status: 'OPEN' | 'RESOLVED';
 }
