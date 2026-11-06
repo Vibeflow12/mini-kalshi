@@ -33,8 +33,8 @@ stockBalanceSchema.index({ userId: 1, marketId: 1, type: 1 }, { unique: true });
 
 export type stockBalanceT = InferSchemaType<typeof stockBalanceSchema>;
 
-const stockBalanceModel =
+const stockBalance =
   (mongoose.models.StockBalance as Model<stockBalanceT>) ||
   mongoose.model<stockBalanceT>('StockBalance', stockBalanceSchema);
 
-export default stockBalanceModel;
+export default stockBalance;

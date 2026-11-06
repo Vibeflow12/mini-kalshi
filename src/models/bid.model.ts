@@ -43,7 +43,7 @@ bidSchema.index({ orderbookId: 1, status: 1, price: -1 });
 
 export type bidSchemaT = InferSchemaType<typeof bidSchema>;
 
-const BidModel =
+const Bid =
   (mongoose.models.Bid as Model<bidSchemaT>) || mongoose.model<bidSchemaT>('Bid', bidSchema);
 
-export default BidModel;
+export default Bid;

@@ -38,7 +38,7 @@ const marketSchema = new Schema(
 
 export type marketT = InferSchemaType<typeof marketSchema>;
 
-const MarketModel =
+const Market =
   (mongoose.models.Market as Model<marketT>) || mongoose.model<marketT>('Market', marketSchema);
 
-export default MarketModel;
+export default Market;

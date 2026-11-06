@@ -22,8 +22,8 @@ orderbookModelSchema.index({ marketId: 1, type: 1 }, { unique: true });
 
 export type OrderbookT = InferSchemaType<typeof orderbookModelSchema>;
 
-const orderbookModel =
+const orderbook =
   (mongoose.models.Orderbook as Model<OrderbookT>) ||
   mongoose.model<OrderbookT>('Orderbook', orderbookModelSchema);
 
-export default orderbookModel;
+export default orderbook;

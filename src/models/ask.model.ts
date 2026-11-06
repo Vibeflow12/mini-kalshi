@@ -43,7 +43,7 @@ askSchema.index({ orderbookId: 1, status: 1, price: 1 });
 
 export type askSchemaT = InferSchemaType<typeof askSchema>;
 
-const AskModel =
+const Ask =
   (mongoose.models.Ask as Model<askSchemaT>) || mongoose.model<askSchemaT>('Ask', askSchema);
 
-export default AskModel;
+export default Ask;
