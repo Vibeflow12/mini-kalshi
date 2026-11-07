@@ -3,6 +3,7 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import connectDB from './db.ts';
 import { authRouter } from './routes/authRoute.ts';
+import { onrampRouter } from './routes/onrampRoute.ts';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/onramp', onrampRouter);
 
 connectDB()
   .then(() => {
